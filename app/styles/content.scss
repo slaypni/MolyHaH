@@ -1,0 +1,29 @@
+@import "compass/css3";
+
+.moly_hah_hint {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 0px 4px;
+    border: solid 0px;
+    background-color: #BBF;
+    opacity: 0.9;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: normal;
+    color: #000;
+    @include text-shadow(rgba(#FFF, 0.9) 0px 0px 1px);
+
+    &.link {
+        background-color: #FF8;
+    }
+
+    &.matching {
+        background-color: #BFB;
+    }
+
+    &.not-matching {
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html ng-app="options">
+  <head>
+    <link href="styles/options.css" rel="stylesheet">
+    <!-- build:js scripts/options.js -->
+    <script src="components/jquery/jquery.js"></script>
+    <script src="components/angular/angular.js"></script>
+    <script src="components/bootstrap/js/bootstrap.js"></script>
+    <script src="components/underscore/underscore.js"></script>
+    <script src="scripts/libs/hapt.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/options.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!-- CHROME EXTENSION OPTION -->
+    <div class="container">
+      <div class="page-header">
+        <h1><small>Moly</small>HaH</h1>
+      </div>
+    </div>
+
+    <div class="container" ng-view></div>
+  </body>
+
+  <script type="text/ng-template" id="settingsView.html">
+    <settings></settings>
+  </script>
+
+  <script type="text/ng-template" id="settings.html">
+    <div>
+      <configs></configs>
+      <bindings></bindings>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="configs.html">
+    <div>
+      <h3>Configuration</h3>
+      <table class="table">
+        <tr ng-repeat="config in configs" class="row">
+          <td class="span3">
+            {{config.description}}
+          </td>
+          <td>
+            <input type="text" ng-model="config.val"/>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </script>
+
+  <script type="text/ng-template" id="bindings.html">
+    <div>
+      <h3>Bindings</h3>
+      <table class="table">
+        <tr ng-repeat="binding in bindings" class="row">
+          <td class="span3">
+            {{binding.description}}
+          </td>
+          <td>
+            <span ng-repeat="shortcut in binding.val">
+              <button class="btn span2"
+                      ng-class="{'editing': (editing && editing.binding.name == binding.name && editing.index == $index),
+                                'disabled': (editing && editing.binding.name == binding.name && editing.index == $index),
+                                'btn-info': (editing && editing.binding.name == binding.name && editing.index == $index)}"
+                      ng-click="clickShortcut($event, $parent.$index, $index)">
+                {{shortcut.join(' ')}}
+              </button>
+              <button class="btn span1 btn-info"
+                      ng-show="editing && editing.binding.name == binding.name && editing.index == $index"
+                      ng-click="clickRemove($event, $parent.$index, $index)">
+                <i class="icon-remove icon-white"></i>
+              </button>
+            </span>
+            <button class="btn span1" ng-click="clickAddition($event, $index)">
+              <i class="icon-plus-sign"></i>
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </script>
+
+</html>

@@ -98,7 +98,7 @@ hah = (cb = null) ->
             return isInsideX and isInsideY
 
         hints = []
-        for q in ['a[href]', 'input:not([type="hidden"])', 'textarea', 'button', 'select', '[onclick]', '[onmousedown]', '[onmouseup]', '[role="link"]', '[role="button"]'] # not support for: 'area[href]', object
+        for q in ['a', 'input:not([type="hidden"])', 'textarea', 'button', 'select', '[onclick]', '[onmousedown]', '[onmouseup]', '[role="link"]', '[role="button"]'] # not support for: 'area[href]', object
             _hints = for e in document.documentElement.querySelectorAll(q) when isVisible(e) and isInsideDisplay(e)
                 createHint(e)
             hints = hints.concat(_hints)

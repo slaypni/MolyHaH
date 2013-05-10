@@ -4,6 +4,7 @@ INITIAL_SETTINGS =
     symbols: 'ASDFJKL'
     bindings:
         enterHah: [['E']]
+        enterHahBg: [['Shift', 'E']]
         quitHah: [['Esc']]
 
 EMPTY_SETTINGS =
@@ -23,11 +24,24 @@ EMPTY_SETTINGS =
 ###
 getSettings = (cb) ->
     chrome.storage.local.get null, (items) ->
-        settings = 
-            if _.isEmpty(items)
-                _.clone(INITIAL_SETTINGS)
+        settings = {bindings: {}}
+        for k, v of INITIAL_SETTINGS
+            if not items.hasOwnProperty(k)
+                settings[k] = v
+            else if k == 'bindings'
+                used = null
+                setBinding = (bindings, name, binding) ->
+                    used ?= _.uniq(_.flatten(_.values(items.bindings), true).map (shortcuts) -> shortcuts.join(' '))
+                    bindings[name] = (shortcuts for shortcuts in binding when shortcuts.join(' ') not in used)
+                    used = used.concat(bindings[name])
+            
+                for name, binding of v
+                    if items.bindings.hasOwnProperty(name)
+                        settings.bindings[name] = items.bindings[name]
+                    else # if a new kind of binding is added (by update), shortcuts that is not used in previous settings can be set 
+                        setBinding(settings.bindings, name, binding)
             else
-                _.defaults(items, EMPTY_SETTINGS)
+                settings[k] = items[k]
         cb(settings)
 
 ###

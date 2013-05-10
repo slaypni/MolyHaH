@@ -2,9 +2,11 @@
 
 hapt_listen = (cb) ->
     targets = ['body', 'html']
-    focusables = _.flatten(_.flatten(document.querySelectorAll(focusable), true) for focusable in ['[tabindex]'], true) # omitted ['a', 'area', 'button'] for performance
-    for focusable in _.uniq(focusables) when not focusable.isContentEditable
-        targets.push(focusable)
+    elems = {}
+    for focusables in (Array.prototype.slice.call(document.querySelectorAll(focusable_q), 0) for focusable_q in ['[tabindex]']) # omitted ['a', 'area', 'button'] for performance
+        for focusable in focusables when not focusable.isContentEditable
+            elems[focusable.outerHTML] = focusable
+    targets = targets.concat(_.values(elems))
     hapt.listen(cb, window, true, targets)
 
 settings = null

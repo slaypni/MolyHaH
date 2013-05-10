@@ -163,8 +163,9 @@ listen = (cb, doc = window, useCapture = true, targets = ['body', 'html']) ->
 
     keydown_listener = (event) ->
         isTargetTagname = ->
+            tagName = event.target.tagName.toLowerCase()
             target_tagnames.some (t) ->
-                t == event.target.tagName.toLowerCase()
+                t == tagName
 
         isTargetElement = ->
             target_elements.some (t) ->

@@ -1,7 +1,11 @@
 # require hapt.js, underscore.js
 
 hapt_listen = (cb) ->
-    hapt.listen(cb, window, true, ['body', 'html', 'div'])
+    targets = ['body', 'html']
+    div = document.querySelector('div')
+    if not div.isContentEditable
+        targets.push(div)
+    hapt.listen(cb, window, true, targets)
 
 settings = null
 storage.getSettings (_settings) ->
@@ -98,7 +102,7 @@ hah = (cb = null) ->
             return isInsideX and isInsideY
 
         hints = []
-        for q in ['a', 'input:not([type="hidden"])', 'textarea', 'button', 'select', '[onclick]', '[onmousedown]', '[onmouseup]', '[role="link"]', '[role="button"]'] # not support for: 'area[href]', object
+        for q in ['a', 'input:not([type="hidden"])', 'textarea', 'button', 'select', '[contenteditable]:not([contenteditable="false"])', '[onclick]', '[onmousedown]', '[onmouseup]', '[role="link"]', '[role="button"]'] # not support for: 'area[href]', object
             _hints = for e in document.documentElement.querySelectorAll(q) when isVisible(e) and isInsideDisplay(e)
                 createHint(e)
             hints = hints.concat(_hints)
@@ -147,7 +151,11 @@ hah = (cb = null) ->
                         else
                             elem.focus()
                     when 'textarea', 'select' then elem.focus()
-                    else dispatchClickEvent()
+                    else
+                        if elem.isContentEditable
+                            elem.focus()
+                        else
+                            dispatchClickEvent()
                 quit()
 
             getRegularClassName = (h) ->

@@ -75,17 +75,10 @@ hah = (cb = null) ->
         panel.id = BACK_PANEL_ID
         return panel
 
-    createHints = ->
-        offset = (e) ->
-            pos = e.getBoundingClientRect()
-            return {left: pos.left + window.scrollX, top: pos.top + window.scrollY}
-         
-        createHint = (target, position = offset(target)) ->
-            {left: left, top: top} = position
+    createHints = ->         
+        createHint = (target) ->
             hint = document.createElement('div')
             hint.className = HINT_CLASS_NAME + (if target.tagName.toLowerCase() == 'a' then ' link' else '')
-            hint.style.left = '' + _.max([left, window.scrollX]) + 'px'
-            hint.style.top = '' + _.max([top, window.scrollY]) + 'px'
             hint.moly_hah = {
                 target: target
                 defaultClassName: hint.className
@@ -117,8 +110,23 @@ hah = (cb = null) ->
     document.querySelector('body').appendChild(panel)
 
     hints = for hint in createHints().reverse()
+        setPosition = () ->
+            offset = (e) ->
+                pos = e.getBoundingClientRect()
+                return {left: pos.left + window.scrollX, top: pos.top + window.scrollY}
+                
+            {left: left, top: top} = offset(hint.moly_hah.target)
+            style = window.getComputedStyle(hint)
+            client =
+                width: window.innerWidth or document.documentElement.clientWidth
+                height: window.innerHeight or document.documentElement.clientHeight
+            hint.style.left = '' + _.min([_.max([left, window.scrollX]), window.scrollX + client.width - parseInt(style.width)]) + 'px'
+            hint.style.top = '' + _.min([_.max([top, window.scrollY]), window.scrollY + client.height - parseInt(style.height)]) + 'px'
+
         hint.style.zIndex = 2147483647 - panel.childElementCount
         panel.appendChild(hint)
+        setPosition()
+        hint
 
     if hints.length == 0
         quit()

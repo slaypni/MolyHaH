@@ -2,11 +2,9 @@
 
 hapt_listen = (cb) ->
     targets = ['body', 'html']
-    elems = {}
-    for focusables in (Array.prototype.slice.call(document.querySelectorAll(focusable_q), 0) for focusable_q in ['[tabindex]']) # omitted ['a', 'area', 'button'] for performance
-        for focusable in focusables when not focusable.isContentEditable
-            elems[focusable.outerHTML] = focusable
-    targets = targets.concat(_.values(elems))
+    focusables = Array.prototype.slice.call(document.querySelectorAll('[tabindex]'), 0) # omitted selector ', a, area, button' for performance
+    for f in focusables when not f.isContentEditable
+        targets.push(f)
     hapt.listen(cb, window, true, targets)
 
 settings = null
@@ -103,12 +101,8 @@ hah = (cb = null) ->
             isInsideY = -1 * e.offsetHeight <= pos.top <= (window.innerHeight or document.documentElement.clientHeight)
             return isInsideX and isInsideY
 
-        hints = []
-        for q in ['a', 'input:not([type="hidden"])', 'textarea', 'button', 'select', '[contenteditable]:not([contenteditable="false"])', '[onclick]', '[onmousedown]', '[onmouseup]', '[role="link"]', '[role="button"]'] # not support for: 'area[href]', object
-            _hints = for e in document.documentElement.querySelectorAll(q) when isVisible(e) and isInsideDisplay(e)
-                createHint(e)
-            hints = hints.concat(_hints)
-        hints = _.uniq(hints)
+        q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"]' # not support for: ', area[href], object'
+        hints = (createHint(e) for e in Array.prototype.slice.call(document.querySelectorAll(q), 0) when isVisible(e) and isInsideDisplay(e))
 
         for [hint, shortcut] in _.zip(hints, createSymbolSequences(hints.length))
             hint.textContent = shortcut

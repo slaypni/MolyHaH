@@ -1,5 +1,13 @@
 # require hapt.js, underscore.js
 
+callbg = (cb, fnname, args...) ->
+    chrome.runtime.sendMessage {type: 'call', fnname: fnname, args: args}, (response) ->
+        cb?(response)
+
+getTab = (cb) ->
+    chrome.runtime.sendMessage {type: 'getTab'}, (tab) ->
+        cb?(tab)
+
 hapt_listen = (cb) ->
     targets = ['body', 'html']
     focusables = Array.prototype.slice.call(document.querySelectorAll('[tabindex]'), 0) # omitted selector ', a, area, button' for performance
@@ -11,23 +19,30 @@ settings = null
 storage.getSettings (_settings) ->
     settings = _settings
        
-    hah_listen = ->
+    listen = ->
         listener = hapt_listen (keys) ->
             _keys = keys.join(' ')
             if _keys in (binding.join(' ') for binding in settings.bindings.enterHah)
                 listener.stop()
                 listener = null
-                hah ->
-                    hah_listen()
+                hah null, ->
+                    listen()
+                return false
+            if _keys in (binding.join(' ') for binding in settings.bindings.enterHahBg)
+                listener.stop()
+                listener = null
+                hah {active: false}, ->
+                    listen()
                 return false
             return true
-    hah_listen()
+    listen()
 
 ###
 Enter HaH mode
-@param {Function} cb Called when HaH mode is canceled
+@param {Object} tab An Object passed to chrome.tabs.create() as createProperties. If null is passed, a link is "clicked" regularly.
+@param {Function} cb Called when HaH mode is canceled.
 ###
-hah = (cb = null) ->
+hah = (tab_option = null, cb = null) ->
     HINT_CLASS_NAME = 'moly_hah_hint'
     BACK_PANEL_ID = 'moly_hah_backpanel'
 
@@ -35,8 +50,8 @@ hah = (cb = null) ->
 
     createSymbolSequences = (element_num) ->    
         ###
-        @param {Number} element_num Number of target elements
-        @param {Number} symbol_num Numbef of caractors used at Hit-a-Hint
+        @param {Number} element_num Number of target elements.
+        @param {Number} symbol_num Numbef of caractors used at Hit-a-Hint.
         ###
         createUniqueSequences = (element_num, symbol_num) ->
             remaining_num = element_num
@@ -141,10 +156,21 @@ hah = (cb = null) ->
 
             click = (elem) ->
                 dispatchClickEvent = () ->
-                    for type in ['mousedown', 'mouseup', 'click']
-                        ev = document.createEvent('MouseEvents')
-                        ev.initEvent(type, true, false)
-                        elem.dispatchEvent(ev)
+                    href = elem.getAttribute('href')?.trimLeft()
+                    if tab_option? and href
+                        if href[0..1] == '//'
+                            href = window.location.protocol + href
+                        else if href[0] == '/'
+                            href = window.location.protocol + window.location.host + href
+                        else if not href.match(/^\S+:\/\//)?
+                            href = window.location.href[0..window.location.href.lastIndexOf('/')] + href
+                        getTab (tab) ->
+                            callbg(null, 'chrome.tabs.create', _.extend(tab_option, {url: href, index: tab.index + 1, openerTabId: tab.id}))
+                    else
+                        for type in ['mousedown', 'mouseup', 'click']
+                            ev = document.createEvent('MouseEvents')
+                            ev.initEvent(type, true, false)
+                            elem.dispatchEvent(ev)
                     
                 switch elem.tagName.toLowerCase()
                     when 'a' then dispatchClickEvent()

@@ -4,6 +4,7 @@ CONFIG_DESCRIPTIONS = [
 
 BINDING_DESCRIPTIONS = [
     {name: 'enterHah', description: 'Enter HaH mode'},
+    {name: 'enterHahBg', description: 'Enter HaH mode (background)'},
     {name: 'quitHah', description: 'Quit HaH mode'},
 ]
 

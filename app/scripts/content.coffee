@@ -105,12 +105,27 @@ hah = (tab_option = null, cb = null) ->
 
         isInsideDisplay = (e) ->
             pos = e.getBoundingClientRect()
-            isInsideX = -1 * e.offsetWidth <= pos.left <= (window.innerWidth or document.documentElement.clientWidth)
-            isInsideY = -1 * e.offsetHeight <= pos.top <= (window.innerHeight or document.documentElement.clientHeight)
+            isInsideX = -1 * e.offsetWidth <= pos.left < (window.innerWidth or document.documentElement.clientWidth)
+            isInsideY = -1 * e.offsetHeight <= pos.top < (window.innerHeight or document.documentElement.clientHeight)
             return isInsideX and isInsideY
 
-        q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"]' # not support for: ', area[href], object'
+        q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"], [class*="button"], [class*="btn"]' # not support for: ', area[href], object'
         hints = (createHint(e) for e in Array.prototype.slice.call(document.querySelectorAll(q), 0) when isVisible(e) and isInsideDisplay(e))
+
+        # if element A is descendant of element B, element A is dismissed
+        filter = ->
+            ancestors = []
+            for hint in hints
+                elem = hint.moly_hah.target.parentElement
+                while elem?
+                    break if ancestors.some (e) -> e == elem
+                    ancestors.push(elem)
+                    elem = elem.parentElement
+            _hints = []
+            for hint in hints when (ancestors.every (e) -> e != hint.moly_hah.target)
+                _hints.push(hint)
+            hints = _hints
+        filter()
 
         for [hint, shortcut] in _.zip(hints, createSymbolSequences(hints.length))
             hint.textContent = shortcut

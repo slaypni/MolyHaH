@@ -93,7 +93,7 @@ hah = (tab_option = null, cb = null) ->
     createHints = ->         
         createHint = (target) ->
             hint = document.createElement('div')
-            hint.className = HINT_CLASS_NAME + (if target.tagName.toLowerCase() == 'a' then ' link' else '')
+            hint.className = HINT_CLASS_NAME + (if target.nodeName.toLowerCase() == 'a' then ' link' else '')
             hint.moly_hah = {
                 target: target
                 defaultClassName: hint.className
@@ -180,7 +180,7 @@ hah = (tab_option = null, cb = null) ->
                             ev.initEvent(type, true, false)
                             elem.dispatchEvent(ev)
                     
-                switch elem.tagName.toLowerCase()
+                switch elem.nodeName.toLowerCase()
                     when 'a' then dispatchClickEvent()
                     when 'input'
                         attr = elem.getAttribute('type')?.toLowerCase()
@@ -197,7 +197,7 @@ hah = (tab_option = null, cb = null) ->
                 quit()
 
             getRegularClassName = (h) ->
-                return HINT_CLASS_NAME + (if h.moly_hah.target.tagName.toLowerCase() in ['a'] then ' link' else '')
+                return HINT_CLASS_NAME + (if h.moly_hah.target.nodeName.toLowerCase() in ['a'] then ' link' else '')
 
             matching_hints = findMatchingHints()
             if matching_hints.length == hints.length

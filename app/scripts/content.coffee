@@ -156,16 +156,9 @@ hah = (tab_option = null, cb = null) ->
 
             click = (elem) ->
                 dispatchClickEvent = () ->
-                    href = elem.getAttribute('href')?.trimLeft()
-                    if tab_option? and href
-                        if href[0..1] == '//'
-                            href = window.location.protocol + href
-                        else if href[0] == '/'
-                            href = window.location.protocol + window.location.host + href
-                        else if not href.match(/^\S+:\/\//)?
-                            href = window.location.href[0..window.location.href.lastIndexOf('/')] + href
+                    if tab_option? and elem.href
                         getTab (tab) ->
-                            callbg(null, 'chrome.tabs.create', _.extend(tab_option, {url: href, index: tab.index + 1, openerTabId: tab.id}))
+                            callbg(null, 'chrome.tabs.create', _.extend(tab_option, {url: elem.href, index: tab.index + 1, openerTabId: tab.id}))
                     else
                         for type in ['mousedown', 'mouseup', 'click']
                             ev = document.createEvent('MouseEvents')

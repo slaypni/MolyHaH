@@ -35,8 +35,8 @@ app.directive 'settings', ->
                 $scope.settings = settings
                 $scope.configs = convertIntoArray(_.omit(settings, 'bindings'), CONFIG_DESCRIPTIONS)
                 $scope.bindings = convertIntoArray(settings['bindings'], BINDING_DESCRIPTIONS)
-        
-        storage.getSettings(loadSettings)
+
+        chrome.runtime.sendMessage({type: 'getSettings'}, loadSettings)
 
         onLeaveTab = (cb) ->
             chrome.tabs.getCurrent (tab) ->
@@ -63,7 +63,7 @@ app.directive 'settings', ->
                 
             settings = _.extend(convertIntoObject($scope.configs), {bindings: convertIntoObject($scope.bindings)})
             if not _.isEqual($scope.settings, settings)
-                storage.setSettings(settings, loadSettings)
+                chrome.runtime.sendMessage({type: 'setSettings', settings: settings}, loadSettings)
                 
         onLeaveTab(leaveTabHandler)
         onRemoveTab(leaveTabHandler)

@@ -16,7 +16,7 @@ hapt_listen = (cb) ->
     hapt.listen(cb, window, true, targets)
 
 settings = null
-storage.getSettings (_settings) ->
+chrome.runtime.sendMessage {type: 'getSettings'}, (_settings) ->
     settings = _settings
        
     listen = ->
@@ -51,7 +51,7 @@ hah = (tab_option = null, cb = null) ->
     createSymbolSequences = (element_num) ->    
         ###
         @param {Number} element_num Number of target elements.
-        @param {Number} symbol_num Numbef of caractors used at Hit-a-Hint.
+        @param {Number} symbol_num Number of characters used at Hit-a-Hint.
         ###
         createUniqueSequences = (element_num, symbol_num) ->
             remaining_num = element_num

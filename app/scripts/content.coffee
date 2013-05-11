@@ -191,7 +191,7 @@ hah = (tab_option = null, cb = null) ->
             else if matching_hints.length > 1
                 for h in hints
                     h.className = h.moly_hah.defaultClassName + ' ' + (if h in matching_hints then 'matching' else 'not-matching')
-            else if matching_hints.length == 1
+            if matching_hints.length == 1 and input == matching_hints[0].textContent
                 click(matching_hints[0].moly_hah.target)
 
         if not _.isEqual(keys, _keys)

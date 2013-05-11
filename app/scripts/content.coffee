@@ -9,11 +9,11 @@ getTab = (cb) ->
         cb?(tab)
 
 hapt_listen = (cb) ->
-    targets = ['body', 'html']
-    focusables = Array.prototype.slice.call(document.querySelectorAll('[tabindex]'), 0) # omitted selector ', a, area, button' for performance
-    for f in focusables when not f.isContentEditable
-        targets.push(f)
-    hapt.listen(cb, window, true, targets)
+    hapt.listen( (keys, event) ->
+        if not (event.target.isContentEditable or event.target.nodeName.toLowerCase() in ['textarea', 'input', 'select'])
+            return cb(keys, event)
+        return true
+    , window, true, [])
 
 settings = null
 chrome.runtime.sendMessage {type: 'getSettings'}, (_settings) ->

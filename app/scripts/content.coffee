@@ -115,14 +115,13 @@ hah = (tab_option = null, cb = null) ->
 
         # if element A is descendant of element B, element A is dismissed
         filter = ->
-            ommits = []
+            _targets = []
             for elem in targets
                 e = elem
                 while (e = e.parentElement)?
-                    if e in targets
-                        ommits.push(elem)
-                        break
-            return _.difference(targets, ommits)
+                    if e in targets then break
+                if not e? then _targets.push(elem)
+            return _targets
         hints = (createHint(e) for e in filter())
 
         for [hint, shortcut] in _.zip(hints, createSymbolSequences(hints.length))

@@ -109,8 +109,9 @@ hah = (tab_option = null, cb = null) ->
             isInsideY = -1 * e.offsetHeight <= pos.top < (window.innerHeight or document.documentElement.clientHeight)
             return isInsideX and isInsideY
 
+        targets = (e for e in Array.prototype.slice.call(document.querySelectorAll('*'), 0) when window.getComputedStyle(e).cursor == 'pointer')
         q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"], [class*="button"], [class*="btn"]' # not support for: ', area[href], object'
-        hints = (createHint(e) for e in Array.prototype.slice.call(document.querySelectorAll(q), 0) when isVisible(e) and isInsideDisplay(e))
+        hints = (createHint(e) for e in _.union(Array.prototype.slice.call(document.querySelectorAll(q), 0), targets) when isVisible(e) and isInsideDisplay(e))
 
         # if element A is descendant of element B, element A is dismissed
         filter = ->

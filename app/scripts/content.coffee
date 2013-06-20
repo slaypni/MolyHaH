@@ -111,22 +111,19 @@ hah = (tab_option = null, cb = null) ->
 
         targets = (e for e in Array.prototype.slice.call(document.querySelectorAll('*'), 0) when window.getComputedStyle(e).cursor == 'pointer')
         q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"], [class*="button"], [class*="btn"]' # not support for: ', area[href], object'
-        hints = (createHint(e) for e in _.union(Array.prototype.slice.call(document.querySelectorAll(q), 0), targets) when isVisible(e) and isInsideDisplay(e))
+        targets = (e for e in _.union(Array.prototype.slice.call(document.querySelectorAll(q), 0), targets) when isVisible(e) and isInsideDisplay(e))
 
         # if element A is descendant of element B, element A is dismissed
         filter = ->
-            ancestors = []
-            for hint in hints
-                elem = hint.moly_hah.target.parentElement
-                while elem?
-                    break if ancestors.some (e) -> e == elem
-                    ancestors.push(elem)
-                    elem = elem.parentElement
-            _hints = []
-            for hint in hints when (ancestors.every (e) -> e != hint.moly_hah.target)
-                _hints.push(hint)
-            hints = _hints
-        filter()
+            ommits = []
+            for elem in targets
+                e = elem
+                while (e = e.parentElement)?
+                    if e in targets
+                        ommits.push(elem)
+                        break
+            return _.difference(targets, ommits)
+        hints = (createHint(e) for e in filter())
 
         for [hint, shortcut] in _.zip(hints, createSymbolSequences(hints.length))
             hint.textContent = shortcut

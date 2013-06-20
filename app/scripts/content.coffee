@@ -110,7 +110,7 @@ hah = (tab_option = null, cb = null) ->
             return isInsideX and isInsideY
 
         targets = (e for e in Array.prototype.slice.call(document.querySelectorAll('*'), 0) when window.getComputedStyle(e).cursor == 'pointer')
-        q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"], [class*="button"], [class*="btn"]' # not support for: ', area[href], object'
+        q = 'a, input:not([type="hidden"]), textarea, button, select, [contenteditable]:not([contenteditable="false"]), [onclick], [onmousedown], [onmouseup], [role="link"], [role="button"]' # not support for: ', area[href], object'
         targets = (e for e in _.union(Array.prototype.slice.call(document.querySelectorAll(q), 0), targets) when isVisible(e) and isInsideDisplay(e))
 
         # if element A is descendant of element B, element A is dismissed

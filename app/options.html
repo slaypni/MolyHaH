@@ -1,6 +1,7 @@
 <!doctype html>
 <html ng-app="options">
   <head>
+    <title>Moly HaH</title>
     <link href="styles/options.css" rel="stylesheet">
     <!-- build:js scripts/options.js -->
     <script src="components/jquery/jquery.js"></script>
@@ -64,7 +65,7 @@
                                 'disabled': (editing && editing.binding.name == binding.name && editing.index == $index),
                                 'btn-info': (editing && editing.binding.name == binding.name && editing.index == $index)}"
                       ng-click="clickShortcut($event, $parent.$index, $index)">
-                {{shortcut.join(' ')}}
+                {{shortcut.length > 0 && shortcut.join(' ') || '&nbsp;'}}
               </button>
               <button class="btn span1 btn-info"
                       ng-show="editing && editing.binding.name == binding.name && editing.index == $index"

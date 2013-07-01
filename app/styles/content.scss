@@ -15,17 +15,17 @@
     color: #000;
     @include text-shadow(rgba(#FFF, 0.9) 0px 0px 1px);
 
-    &.link {
+    &.moly_hah_link {
         @extend .moly_hah_hint;
         background-color: #FF8;
     }
 
-    &.matching {
+    &.moly_hah_matching {
         @extend .moly_hah_hint;
         background-color: #BFB;
     }
 
-    &.not-matching {
+    &.moly_hah_not-matching {
         @extend .moly_hah_hint;
         visibility: hidden;
     }

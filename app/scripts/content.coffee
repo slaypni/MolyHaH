@@ -93,7 +93,7 @@ hah = (tab_option = null, cb = null) ->
     createHints = ->         
         createHint = (target) ->
             hint = document.createElement('div')
-            hint.className = HINT_CLASS_NAME + (if target.nodeName.toLowerCase() == 'a' then ' link' else '')
+            hint.className = HINT_CLASS_NAME + (if target.nodeName.toLowerCase() == 'a' then ' moly_hah_link' else '')
             hint.moly_hah = {
                 target: target
                 defaultClassName: hint.className
@@ -143,12 +143,11 @@ hah = (tab_option = null, cb = null) ->
                 return {left: pos.left + window.scrollX, top: pos.top + window.scrollY}
                 
             {left: left, top: top} = offset(hint.moly_hah.target)
-            style = window.getComputedStyle(hint)
             client =
                 width: window.innerWidth or document.documentElement.clientWidth
                 height: window.innerHeight or document.documentElement.clientHeight
-            hint.style.left = '' + _.min([_.max([left, window.scrollX]), window.scrollX + client.width - parseInt(style.width)]) + 'px'
-            hint.style.top = '' + _.min([_.max([top, window.scrollY]), window.scrollY + client.height - parseInt(style.height)]) + 'px'
+            hint.style.left = '' + _.min([_.max([left, window.scrollX]), window.scrollX + client.width - hint.offsetWidth]) + 'px'
+            hint.style.top = '' + _.min([_.max([top, window.scrollY]), window.scrollY + client.height - hint.offsetHeight]) + 'px'
 
         hint.style.zIndex = 2147483647 - panel.childElementCount
         panel.appendChild(hint)
@@ -202,7 +201,7 @@ hah = (tab_option = null, cb = null) ->
                     h.className = h.moly_hah.defaultClassName
             else if matching_hints.length > 1
                 for h in hints
-                    h.className = h.moly_hah.defaultClassName + ' ' + (if h in matching_hints then 'matching' else 'not-matching')
+                    h.className = h.moly_hah.defaultClassName + ' ' + (if h in matching_hints then 'moly_hah_matching' else 'moly_hah_not-matching')
             if matching_hints.length == 1 and input == matching_hints[0].textContent
                 click(matching_hints[0].moly_hah.target)
 

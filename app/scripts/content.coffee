@@ -173,7 +173,7 @@ hah = (tab_option = null, cb = null) ->
                     else
                         for type in ['mousedown', 'mouseup', 'click']
                             ev = document.createEvent('MouseEvents')
-                            ev.initEvent(type, true, false)
+                            ev.initMouseEvent(type, true, true, document.defaultView, 1, 0, 0, 0, 0, false, false, false, false, 0, null)
                             elem.dispatchEvent(ev)
                     
                 switch elem.nodeName.toLowerCase()

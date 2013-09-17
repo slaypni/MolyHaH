@@ -160,7 +160,7 @@ hah = (tab_option = null, cb = null) ->
 
     input = ''
     _keys = []
-    listener = hapt_listen (keys) ->
+    listener = hapt_listen (keys, event) ->
         handle_input = ->
             findMatchingHints = ->
                 return (h for h in hints when h.textContent.slice(0, input.length) == input)
@@ -205,11 +205,9 @@ hah = (tab_option = null, cb = null) ->
             if matching_hints.length == 1 and input == matching_hints[0].textContent
                 click(matching_hints[0].moly_hah.target)
 
-        if not _.isEqual(keys, _keys)
-            keys = _.difference(keys, _keys)
-        _keys = (k for k in keys when k.length == 1)
+        key = String.fromCharCode(event.keyCode)
 
-        if keys.join(' ') in (binding.join(' ') for binding in settings.bindings.quitHah)
+        if (settings.bindings.quitHah.some (binding) -> _.isEqual keys, binding)
             quit()
             return false
         else if keys[0] == 'BackSpace'
@@ -219,8 +217,8 @@ hah = (tab_option = null, cb = null) ->
                 input = input.substring(0, input.length - 1)
                 handle_input()
             return false
-        else if keys.length == 1 and keys[0].length == 1 and keys[0] in symbols
-            input += keys[0]
+        else if key in symbols
+            input += key
             handle_input()
             return false
             

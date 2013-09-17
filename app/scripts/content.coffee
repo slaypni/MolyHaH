@@ -196,16 +196,20 @@ hah = (tab_option = null, cb = null) ->
                 return HINT_CLASS_NAME + (if h.moly_hah.target.nodeName.toLowerCase() in ['a'] then ' link' else '')
 
             matching_hints = findMatchingHints()
-            if matching_hints.length == hints.length
+            if matching_hints.length == 1 and input == matching_hints[0].textContent
+                click matching_hints[0].moly_hah.target
+            else if matching_hints.length == hints.length
                 for h in hints
                     h.className = h.moly_hah.defaultClassName
+                    h.innerHTML = h.textContent
             else if matching_hints.length > 1
                 for h in hints
                     h.className = h.moly_hah.defaultClassName + ' ' + (if h in matching_hints then 'moly_hah_matching' else 'moly_hah_not-matching')
-            if matching_hints.length == 1 and input == matching_hints[0].textContent
-                click(matching_hints[0].moly_hah.target)
+                    h.innerHTML = "<span class=\"moly_hah_partial_matching\">#{h.textContent[..input.length-1]}</span>#{h.textContent[input.length..]}"
+            else if matching_hints.length == 0
+                input = input.slice 0, -1
 
-        key = String.fromCharCode(event.keyCode)
+        key = String.fromCharCode event.keyCode
 
         if (settings.bindings.quitHah.some (binding) -> _.isEqual keys, binding)
             quit()
@@ -214,7 +218,7 @@ hah = (tab_option = null, cb = null) ->
             if input.length == 0
                 quit()
             else
-                input = input.substring(0, input.length - 1)
+                input = input.slice 0, -1
                 handle_input()
             return false
         else if key in symbols

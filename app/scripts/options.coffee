@@ -4,8 +4,9 @@ CONFIG_DESCRIPTIONS = [
 
 BINDING_DESCRIPTIONS = [
     {name: 'enterHah', description: 'Enter HaH mode'},
-    {name: 'enterHahBg', description: 'Enter HaH mode (background)'},
+    {name: 'enterHahBg', description: 'Enter HaH mode (new tabs)'},
     {name: 'quitHah', description: 'Quit HaH mode'},
+    {name: 'toggleAbility', description: 'Disable entering HaH mode'}
 ]
 
 MODIFIERS = ['Shift', 'Ctrl', 'Alt', 'Command', 'Meta']

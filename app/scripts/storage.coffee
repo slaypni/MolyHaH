@@ -6,6 +6,7 @@ INITIAL_SETTINGS =
         enterHah: [['E']]
         enterHahBg: [['Shift', 'E']]
         quitHah: [['Esc']]
+        toggleAbility: []
 
 EMPTY_SETTINGS =
     ( (items) ->

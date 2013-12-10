@@ -20,8 +20,12 @@ chrome.runtime.sendMessage {type: 'getSettings'}, (_settings) ->
     settings = _settings
        
     listen = ->
+        isEnabled = true
         listener = hapt_listen (keys) ->
             _keys = keys.join(' ')
+            if _keys in (binding.join(' ') for binding in settings.bindings.toggleAbility)
+                isEnabled = !isEnabled
+            return true if not isEnabled
             if _keys in (binding.join(' ') for binding in settings.bindings.enterHah)
                 listener.stop()
                 listener = null

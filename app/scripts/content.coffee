@@ -143,8 +143,8 @@ hah = (tab_option = null, cb = null) ->
     hints = for hint in createHints().reverse()
         setPosition = () ->
             offset = (e) ->
-                pos = e.getBoundingClientRect()
-                return {left: pos.left + window.scrollX, top: pos.top + window.scrollY}
+                pos = e.getClientRects()[0]
+                return if pos? then {left: pos.left + window.scrollX, top: pos.top + window.scrollY} else {left: 0, top: 0} 
                 
             {left: left, top: top} = offset(hint.moly_hah.target)
             client =

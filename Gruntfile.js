@@ -194,7 +194,7 @@ module.exports = function (grunt) {
                 files: [{
                     // bootstrap's glyphicons-halflings
                     expand: true,
-                    cwd: '<%= yeoman.app %>/components/bootstrap/img',
+                    cwd: '<%= yeoman.app %>/components/bootstrap-css/img',
                     src: ['*.png'],
                     dest: '<%= yeoman.dist %>/img'
                 }, {

@@ -10,7 +10,7 @@
     "default_locale": "en",
     "background": {
         "scripts": [
-            "components/underscore/underscore.js",
+            "components/underscore/underscore-min.js",
             "scripts/storage.js",
             "scripts/background.js"
         ],
@@ -27,8 +27,8 @@
         "styles/content.css"
       ],
       "js": [
+        "components/underscore/underscore-min.js",
         "scripts/libs/hapt.js",
-        "components/underscore/underscore.js",
         "scripts/content.js"
       ],
       "run_at": "document_end",

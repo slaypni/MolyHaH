@@ -10,9 +10,12 @@ getTab = (cb) ->
 
 hapt_listen = (cb) ->
     hapt.listen( (keys, event) ->
-        if not (event.target.isContentEditable or event.target.nodeName.toLowerCase() in ['textarea', 'input', 'select'])
-            return cb(keys, event)
-        return true
+        target = event.target
+        while target?
+            if target.isContentEditable or target.nodeName.toLowerCase() in ['textarea', 'input', 'select']
+                return true
+            target = target.shadowRoot?.activeElement
+        return cb(keys, event)
     , window, true, [])
 
 settings = null

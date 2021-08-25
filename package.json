@@ -1,6 +1,9 @@
 {
   "name": "moly-hah",
   "version": "0.0.0",
+  "scripts": {
+    "build": "bower install; grunt build"
+  },
   "dependencies": {},
   "devDependencies": {
     "bower": "^1.8.8",

@@ -7,7 +7,7 @@
   "dependencies": {},
   "devDependencies": {
     "bower": "^1.8.8",
-    "grunt": "^1.0.4",
+    "grunt": "^1.5.2",
     "grunt-bower-requirejs": "^2.0.0",
     "grunt-concurrent": "^3.0.0",
     "grunt-contrib-clean": "^2.0.0",

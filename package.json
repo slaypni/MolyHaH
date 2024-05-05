@@ -2,31 +2,31 @@
   "name": "moly-hah",
   "version": "0.0.0",
   "scripts": {
-    "build": "bower install; grunt build"
+    "build": "parcel build app/manifest.json",
+    "clean": "rimraf .sass-cache .parcel-cache dist"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "3",
+    "jquery": "~3.4.1",
+    "preact": "^10.21.0",
+    "underscore": "~1.9.1"
+  },
   "devDependencies": {
-    "bower": "^1.8.8",
-    "grunt": "^1.0.4",
-    "grunt-bower-requirejs": "^2.0.0",
-    "grunt-concurrent": "^3.0.0",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-coffee": "^2.1.0",
-    "grunt-contrib-compass": "^1.1.1",
-    "grunt-contrib-compress": "^1.6.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "^2.1.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^3.0.0",
-    "grunt-contrib-htmlmin": "^3.1.0",
-    "grunt-contrib-imagemin": "^3.1.0",
-    "grunt-contrib-jshint": "^2.1.0",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-mocha": "^1.2.0",
-    "grunt-open": "^0.2.4",
-    "grunt-regarde": "^0.1.1",
-    "grunt-svgmin": "^6.0.0",
-    "grunt-usemin": "^3.1.1",
-    "matchdep": "^2.0.0"
+    "@parcel/config-webextension": "^2.12.0",
+    "@parcel/transformer-coffeescript": "^2.12.0",
+    "@parcel/transformer-sass": "^2.12.0",
+    "@types/chrome": "^0.0.267",
+    "@types/underscore": "~1.9",
+    "parcel": "^2.12.0",
+    "parcel-namer-hashless": "^1.0.6",
+    "rimraf": "^5.0.5"
+  },
+  "alias": {
+    "react": "preact/compat",
+    "react-dom/test-utils": "preact/test-utils",
+    "react-dom": "preact/compat"
+  },
+  "parcel-namer-hashless": {
+    "mode": "all"
   }
 }

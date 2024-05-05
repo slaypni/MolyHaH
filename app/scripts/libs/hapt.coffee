@@ -200,6 +200,6 @@ listen = (cb, doc = window, useCapture = true, targets = ['body', 'html']) ->
         stop: stop
     }
     
-@hapt = {
-    listen: listen
+export {
+    listen
 }

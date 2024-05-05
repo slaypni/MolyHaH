@@ -1,7 +1,9 @@
 # require hapt.js, underscore.js
+import _ from 'underscore'
+import * as hapt from './libs/hapt'
 
-callbg = (cb, fnname, args...) ->
-    chrome.runtime.sendMessage {type: 'call', fnname: fnname, args: args}, (response) ->
+callbg = (cb, arg) ->
+    chrome.runtime.sendMessage {type: 'chrome.tabs.create', arg: arg}, (response) ->
         cb?(response)
 
 getTab = (cb) ->
@@ -176,7 +178,7 @@ hah = (tab_option = null, cb = null) ->
                 dispatchClickEvent = () ->
                     if tab_option? and elem.href
                         getTab (tab) ->
-                            callbg(null, 'chrome.tabs.create', _.extend(tab_option, {url: elem.href, index: tab.index + 1, openerTabId: tab.id}))
+                            callbg(null, _.extend(tab_option, {url: elem.href, index: tab.index + 1, openerTabId: tab.id}))
                     else
                         for type in ['mousedown', 'mouseup', 'click']
                             ev = document.createEvent('MouseEvents')

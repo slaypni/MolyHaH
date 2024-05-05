@@ -3,6 +3,7 @@ temp
 .tmp
 dist
 .sass-cache
+.parcel-cache
 app/components
 package
 test

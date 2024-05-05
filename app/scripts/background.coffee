@@ -1,13 +1,11 @@
+import * as storage from './storage'
+
 chrome.runtime.onInstalled.addListener (details) ->
     
 chrome.runtime.onMessage.addListener (request, sender, sendResponse) ->
     switch request.type
-        when 'call'
-            obj = window
-            for prop in request.fnname.split('.')
-                obj = obj[prop]
-            fn = obj
-            response = fn.apply(this, request.args)
+        when 'chrome.tabs.create'
+            response = chrome.tabs.create(request.arg)
             sendResponse(response)
         when 'getTab'
             sendResponse(sender.tab)

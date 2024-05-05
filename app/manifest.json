@@ -1,7 +1,7 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.2.15",
-  "manifest_version": 2,
+  "version": "0.2.16",
+  "manifest_version": 3,
   "description": "__MSG_appDescription__",
   "icons": {
     "16": "images/icon-16.png",
@@ -9,27 +9,18 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": [
-      "components/underscore/underscore-min.js",
-      "scripts/storage.js",
-      "scripts/background.js"
-    ],
-    "persistent": false
+    "service_worker": "scripts/background.coffee",
+    "type": "module"
   },
-  "options_page": "options.html",
+  "options_ui": { "page": "options.html", "open_in_tab": true },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "css": ["styles/content.css"],
-      "js": [
-        "components/underscore/underscore-min.js",
-        "scripts/libs/hapt.js",
-        "scripts/content.js"
-      ],
+      "css": ["styles/content.scss"],
+      "js": ["scripts/content.coffee"],
       "run_at": "document_end",
       "all_frames": false
     }
   ],
-  "permissions": ["storage", "http://*/*", "https://*/*"],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "permissions": ["storage"]
 }

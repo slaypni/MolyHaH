@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "jsx": "react",
+    "target": "es2019",
+    "module": "es6",
+    "lib": ["dom", "esnext"],
+    "jsxFactory": "h",
+    "moduleResolution": "node"
+  }
+}

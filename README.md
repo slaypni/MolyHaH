@@ -7,6 +7,6 @@ Build
 -----
 
 ```
-bower install
-grunt build
+pnpm install
+pnpm build
 ```

@@ -1,4 +1,3 @@
-# require hapt.js, underscore.js
 import _ from 'underscore'
 import * as hapt from './libs/hapt'
 
